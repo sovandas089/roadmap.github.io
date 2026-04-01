@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SOC Analyst 90-Day Roadmap</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #080c12;
+    --bg-panel: #0d1520;
+    --bg-card: #111c2b;
+    --bg-card-hover: #162336;
+    --border: #1e2f45;
+    --border-bright: #2a4060;
+    --accent-blue: #1d8eff;
+    --accent-blue-dim: #0d5aad;
+    --accent-green: #00d68a;
+    --accent-green-dim: #007a4d;
+    --accent-amber: #f5a623;
+    --accent-amber-dim: #a8720f;
+    --accent-red: #ff4757;
+    --text-primary: #e8f0fe;
+    --text-secondary: #7b93b4;
+    --text-muted: #3d5068;
+    --font-mono: 'JetBrains Mono', monospace;
+    --font-display: 'Syne', sans-serif;
+    --glow-blue: 0 0 20px rgba(29,142,255,0.15);
+    --glow-green: 0 0 20px rgba(0,214,138,0.15);
+    --glow-amber: 0 0 20px rgba(245,166,35,0.15);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text-primary);
+    font-family: var(--font-mono);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Background grid pattern */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(29,142,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(29,142,255,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Ambient glow orbs */
+  body::after {
+    content: '';
+    position: fixed;
+    top: -200px;
+    left: -200px;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(29,142,255,0.06) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .page-wrap { position: relative; z-index: 1; max-width: 1400px; margin: 0 auto; padding: 0 24px 60px; }
+
+  /* ── HEADER ── */
+  .header {
+    padding: 32px 0 28px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .header-left { flex: 1; min-width: 260px; }
+
+  .header-eyebrow {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    color: var(--accent-blue);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .header-eyebrow::before {
+    content: '';
+    display: inline-block;
+    width: 24px;
+    height: 1px;
+    background: var(--accent-blue);
+  }
+
+  .header h1 {
+    font-family: var(--font-display);
+    font-size: clamp(20px, 3vw, 28px);
+    font-weight: 800;
+    line-height: 1.2;
+    color: var(--text-primary);
+    letter-spacing: -0.02em;
+  }
+
+  .header h1 span {
+    color: var(--accent-blue);
+  }
+
+  .header-sub {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-top: 8px;
+    line-height: 1.6;
+  }
+
+  /* ── OVERALL PROGRESS RING ── */
+  .header-right {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+
+  .progress-ring-wrap {
+    position: relative;
+    width: 88px;
+    height: 88px;
+  }
+
+  .progress-ring-wrap svg { transform: rotate(-90deg); }
+
+  .progress-ring-track { fill: none; stroke: var(--border); stroke-width: 5; }
+  .progress-ring-fill {
+    fill: none;
+    stroke: var(--accent-blue);
+    stroke-width: 5;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 0.5s ease, stroke 0.3s;
+    filter: drop-shadow(0 0 6px rgba(29,142,255,0.5));
+  }
+
+  .ring-label {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .ring-pct {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1;
+  }
+
+  .ring-sub {
+    font-size: 8px;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+    margin-top: 2px;
+    text-transform: uppercase;
+  }
+
+  .ring-caption {
+    font-size: 10px;
+    color: var(--text-secondary);
+    letter-spacing: 0.05em;
+  }
+
+  /* ── SAVE STATUS ── */
+  .save-toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--bg-panel);
+    border: 1px solid var(--accent-green);
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-size: 11px;
+    color: var(--accent-green);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transform: translateY(80px);
+    opacity: 0;
+    transition: all 0.3s ease;
+    z-index: 1000;
+    box-shadow: var(--glow-green);
+  }
+
+  .save-toast.show { transform: translateY(0); opacity: 1; }
+
+  .save-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent-green);
+    animation: pulse-dot 1.5s ease infinite;
+  }
+
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.7); }
+  }
+
+  /* ── PHASE TABS ── */
+  .phase-nav {
+    display: flex;
+    gap: 6px;
+    margin: 28px 0 0;
+    flex-wrap: wrap;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0;
+  }
+
+  .phase-tab {
+    padding: 10px 20px 12px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: all 0.2s;
+    position: relative;
+  }
+
+  .phase-tab:hover { color: var(--text-secondary); }
+
+  .phase-tab.active[data-phase="1"] { color: var(--accent-blue); border-bottom-color: var(--accent-blue); }
+  .phase-tab.active[data-phase="2"] { color: var(--accent-green); border-bottom-color: var(--accent-green); }
+  .phase-tab.active[data-phase="3"] { color: var(--accent-amber); border-bottom-color: var(--accent-amber); }
+
+  .phase-tab .tab-num {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    border-radius: 4px;
+    background: var(--border);
+    text-align: center;
+    line-height: 18px;
+    font-size: 9px;
+    margin-right: 8px;
+    vertical-align: middle;
+  }
+
+  .phase-tab.active[data-phase="1"] .tab-num { background: var(--accent-blue-dim); }
+  .phase-tab.active[data-phase="2"] .tab-num { background: var(--accent-green-dim); }
+  .phase-tab.active[data-phase="3"] .tab-num { background: var(--accent-amber-dim); }
+
+  /* ── PHASE BANNER ── */
+  .phase-banner {
+    margin: 24px 0 20px;
+    padding: 20px 24px;
+    border-radius: 12px;
+    border: 1px solid;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .phase-banner.p1 { background: rgba(29,142,255,0.05); border-color: rgba(29,142,255,0.2); box-shadow: var(--glow-blue); }
+  .phase-banner.p2 { background: rgba(0,214,138,0.05); border-color: rgba(0,214,138,0.2); box-shadow: var(--glow-green); }
+  .phase-banner.p3 { background: rgba(245,166,35,0.05); border-color: rgba(245,166,35,0.2); box-shadow: var(--glow-amber); }
+
+  .banner-icon {
+    font-size: 32px;
+    flex-shrink: 0;
+    filter: grayscale(0.2);
+  }
+
+  .banner-text { flex: 1; min-width: 200px; }
+  .banner-text h2 {
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .p1 .banner-text h2 { color: var(--accent-blue); }
+  .p2 .banner-text h2 { color: var(--accent-green); }
+  .p3 .banner-text h2 { color: var(--accent-amber); }
+
+  .banner-text p { font-size: 12px; color: var(--text-secondary); line-height: 1.6; }
+
+  /* ── STATS ROW ── */
+  .stats-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+
+  .stat-card {
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 18px;
+    flex: 1;
+    min-width: 120px;
+  }
+
+  .stat-card .s-label {
+    font-size: 10px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 6px;
+  }
+
+  .stat-card .s-value {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1;
+  }
+
+  .stat-card .s-value span { font-size: 12px; color: var(--text-muted); font-weight: 400; }
+
+  /* ── PHASE PROGRESS BAR ── */
+  .phase-prog-wrap {
+    margin-bottom: 28px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .phase-prog-label { font-size: 10px; color: var(--text-muted); white-space: nowrap; text-transform: uppercase; letter-spacing: 0.08em; }
+
+  .phase-prog-bar {
+    flex: 1;
+    height: 3px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .phase-prog-fill {
+    height: 100%;
+    border-radius: 2px;
+    transition: width 0.4s ease;
+  }
+
+  .p1-fill { background: linear-gradient(90deg, var(--accent-blue-dim), var(--accent-blue)); box-shadow: 0 0 8px rgba(29,142,255,0.5); }
+  .p2-fill { background: linear-gradient(90deg, var(--accent-green-dim), var(--accent-green)); box-shadow: 0 0 8px rgba(0,214,138,0.5); }
+  .p3-fill { background: linear-gradient(90deg, var(--accent-amber-dim), var(--accent-amber)); box-shadow: 0 0 8px rgba(245,166,35,0.5); }
+
+  .phase-prog-pct { font-size: 11px; color: var(--text-secondary); font-weight: 600; white-space: nowrap; min-width: 36px; text-align: right; }
+
+  /* ── WEEK SECTION ── */
+  .week-section { margin-bottom: 32px; }
+
+  .week-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+
+  .week-label {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+  }
+
+  .week-line {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .week-count {
+    font-size: 10px;
+    color: var(--text-muted);
+  }
+
+  /* ── DAY GRID ── */
+  .day-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 10px;
+  }
+
+  /* ── DAY CARD ── */
+  .day-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 16px;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s, transform 0.15s, box-shadow 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .day-card::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    border-radius: 12px 0 0 12px;
+    background: var(--border-bright);
+    transition: background 0.2s;
+  }
+
+  .day-card:hover {
+    background: var(--bg-card-hover);
+    border-color: var(--border-bright);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  }
+
+  .day-card.done {
+    border-color: var(--border);
+    opacity: 0.55;
+  }
+
+  .day-card.done::before {
+    background: var(--accent-green);
+    box-shadow: 0 0 8px rgba(0,214,138,0.4);
+  }
+
+  .day-card.done .day-label { text-decoration: line-through; text-decoration-color: var(--text-muted); }
+
+  /* Card accent strip colors by tag */
+  .day-card[data-tag="soc"]::before { background: rgba(29,142,255,0.5); }
+  .day-card[data-tag="auto"]::before { background: rgba(245,166,35,0.5); }
+  .day-card[data-tag="cloud"]::before { background: rgba(0,214,138,0.5); }
+  .day-card[data-tag="cert"]::before { background: rgba(255,71,87,0.5); }
+
+  .day-card.done::before { background: var(--accent-green) !important; }
+
+  .day-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+
+  .day-num {
+    font-size: 10px;
+    color: var(--text-muted);
+    font-weight: 500;
+    letter-spacing: 0.05em;
+  }
+
+  .day-tag {
+    font-size: 9px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 4px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .tag-soc { background: rgba(29,142,255,0.12); color: var(--accent-blue); border: 1px solid rgba(29,142,255,0.2); }
+  .tag-auto { background: rgba(245,166,35,0.12); color: var(--accent-amber); border: 1px solid rgba(245,166,35,0.2); }
+  .tag-cloud { background: rgba(0,214,138,0.12); color: var(--accent-green); border: 1px solid rgba(0,214,138,0.2); }
+  .tag-cert { background: rgba(255,71,87,0.12); color: var(--accent-red); border: 1px solid rgba(255,71,87,0.2); }
+
+  .check-btn {
+    margin-left: auto;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 1.5px solid var(--border-bright);
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.2s;
+  }
+
+  .day-card:hover .check-btn {
+    border-color: var(--accent-green);
+  }
+
+  .day-card.done .check-btn {
+    background: var(--accent-green);
+    border-color: var(--accent-green);
+    box-shadow: 0 0 8px rgba(0,214,138,0.4);
+  }
+
+  .check-icon { display: none; }
+  .day-card.done .check-icon { display: block; }
+
+  .day-label {
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+    line-height: 1.4;
+    margin-bottom: 6px;
+  }
+
+  .day-detail {
+    font-size: 11px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 8px;
+  }
+
+  .day-tools {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
+  .tool-chip {
+    font-size: 10px;
+    padding: 2px 7px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+  }
+
+  /* ── MILESTONE ── */
+  .milestone-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 5px 10px;
+    border-radius: 6px;
+    background: rgba(245,166,35,0.1);
+    color: var(--accent-amber);
+    border: 1px solid rgba(245,166,35,0.3);
+    margin-top: 8px;
+    box-shadow: 0 0 10px rgba(245,166,35,0.1);
+  }
+
+  /* ── RESET BUTTON ── */
+  .toolbar {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .toolbar-label {
+    font-size: 10px;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+  }
+
+  .btn-reset {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 500;
+    padding: 6px 14px;
+    border-radius: 6px;
+    background: rgba(255,71,87,0.08);
+    border: 1px solid rgba(255,71,87,0.2);
+    color: rgba(255,71,87,0.7);
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    transition: all 0.2s;
+  }
+
+  .btn-reset:hover {
+    background: rgba(255,71,87,0.15);
+    color: var(--accent-red);
+    border-color: rgba(255,71,87,0.4);
+  }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border-bright); border-radius: 3px; }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .day-card { animation: fadeInUp 0.25s ease both; }
+
+  @media (max-width: 600px) {
+    .phase-nav { gap: 2px; }
+    .phase-tab { padding: 8px 12px 10px; font-size: 10px; }
+    .day-grid { grid-template-columns: 1fr; }
+    .header { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page-wrap">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-left">
+      <div class="header-eyebrow">Cybersecurity Career Track</div>
+      <h1>SOC Analyst + <span>Automation</span> + Cloud Security<br>90-Day Job Roadmap</h1>
+      <p class="header-sub">Daily task-based plan. Click any card to mark it complete. Progress auto-saves to your browser.</p>
+    </div>
+    <div class="header-right">
+      <div class="progress-ring-wrap">
+        <svg width="88" height="88" viewBox="0 0 88 88">
+          <circle class="progress-ring-track" cx="44" cy="44" r="38"/>
+          <circle class="progress-ring-fill" id="ring-fill" cx="44" cy="44" r="38"
+            stroke-dasharray="238.76"
+            stroke-dashoffset="238.76"/>
+        </svg>
+        <div class="ring-label">
+          <span class="ring-pct" id="ring-pct">0%</span>
+          <span class="ring-sub">done</span>
+        </div>
+      </div>
+      <span class="ring-caption" id="ring-caption">0 / 90 days</span>
+    </div>
+  </div>
+
+  <!-- PHASE TABS -->
+  <div class="phase-nav">
+    <button class="phase-tab active" data-phase="1" onclick="setPhase(1)">
+      <span class="tab-num">1</span>Days 1–30: Core SOC
+    </button>
+    <button class="phase-tab" data-phase="2" onclick="setPhase(2)">
+      <span class="tab-num">2</span>Days 31–60: Automation & Cloud
+    </button>
+    <button class="phase-tab" data-phase="3" onclick="setPhase(3)">
+      <span class="tab-num">3</span>Days 61–90: Job Hunting
+    </button>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div id="main-content"></div>
+
+</div>
+
+<!-- SAVE TOAST -->
+<div class="save-toast" id="save-toast">
+  <div class="save-dot"></div>
+  Progress auto-saved
+</div>
+
+<script>
+const phases = {
+  1: {
+    label: "Phase 1 — Core SOC Skills",
+    icon: "🛡️",
+    goal: "Build foundational SOC analyst skills: log analysis, SIEM, incident response, threat intelligence, and networking for security.",
+    cls: "p1",
+    weeks: [
+      { title: "Week 1 — Networking & Log Foundations", days: [
+        { day:1, tag:"soc", label:"TCP/IP & OSI model deep-dive", detail:"Study all 7 OSI layers with security relevance. Focus on how attacks map to layers.", tools:["TryHackMe","Wireshark"] },
+        { day:2, tag:"soc", label:"Packet analysis with Wireshark", detail:"Capture live traffic, identify protocols, filter by port/IP. Analyse a pcap for anomalies.", tools:["Wireshark","tcpdump"] },
+        { day:3, tag:"soc", label:"DNS, HTTP, HTTPS traffic analysis", detail:"Understand DNS resolution chain, HTTP headers, TLS handshake. Spot DNS tunnelling patterns.", tools:["Wireshark","dig","nslookup"] },
+        { day:4, tag:"soc", label:"Syslog & Windows Event Logs", detail:"Learn Event IDs 4624, 4625, 4688, 4698, 4720. Parse syslog format manually.", tools:["Windows Event Viewer","Syslog-ng"] },
+        { day:5, tag:"soc", label:"Linux logs & journalctl", detail:"Explore /var/log/auth.log, syslog, cron logs. Identify failed SSH attempts.", tools:["journalctl","grep","awk"] },
+        { day:6, tag:"soc", label:"Firewall logs & netflow analysis", detail:"Read Palo Alto / pfSense firewall logs. Understand allow/deny rules and zone-based policies.", tools:["pfSense","Graylog"] },
+        { day:7, tag:"soc", label:"Review week + TryHackMe SOC path", detail:"Complete TryHackMe 'SOC Level 1' intro rooms. Write a one-page summary of the week.", tools:["TryHackMe"] },
+      ]},
+      { title: "Week 2 — SIEM Mastery", days: [
+        { day:8, tag:"soc", label:"Splunk fundamentals — ingestion & indexing", detail:"Set up Splunk Free. Ingest Windows, Linux, and firewall logs. Understand index/sourcetype.", tools:["Splunk","Splunk BOTS"] },
+        { day:9, tag:"soc", label:"SPL searches & statistical commands", detail:"Write SPL: stats, timechart, eval, rex, transaction. Create dashboards for failed logins.", tools:["Splunk SPL"] },
+        { day:10, tag:"soc", label:"Splunk BOTS v1 CTF challenge", detail:"Work through Boss of the SOC v1. Focus on intrusion, web attacks and ransomware scenarios.", tools:["Splunk BOTS v1"] },
+        { day:11, tag:"soc", label:"Elastic SIEM setup + KQL basics", detail:"Deploy Elastic Stack locally. Ingest logs via Filebeat. Write KQL queries for threat hunting.", tools:["Elastic Stack","Kibana","Filebeat"] },
+        { day:12, tag:"soc", label:"Sigma rules — write & convert", detail:"Understand Sigma rule structure. Write 3 rules (brute force, lateral movement, persistence).", tools:["Sigma","sigmac","uncoder.io"] },
+        { day:13, tag:"soc", label:"SIEM alert tuning & false positives", detail:"Practise reducing false positives by tuning thresholds. Document suppression logic.", tools:["Splunk","Elastic"] },
+        { day:14, tag:"soc", label:"Build a custom SIEM dashboard", detail:"Create a SOC analyst dashboard: failed logins, geo map, top talkers, process executions.", tools:["Splunk","Kibana"] },
+      ]},
+      { title: "Week 3 — Threat Intelligence & MITRE ATT&CK", days: [
+        { day:15, tag:"soc", label:"MITRE ATT&CK framework deep-dive", detail:"Study all 14 tactics. Map the Cyber Kill Chain to ATT&CK techniques.", tools:["attack.mitre.org","ATT&CK Navigator"] },
+        { day:16, tag:"soc", label:"IOC analysis — IPs, hashes, domains", detail:"Use VirusTotal, AbuseIPDB, Shodan to analyse IOCs. Understand OSINT for threat intel.", tools:["VirusTotal","Shodan","AbuseIPDB"] },
+        { day:17, tag:"soc", label:"Threat intel platforms — MISP & OpenCTI", detail:"Deploy MISP locally. Ingest a free threat feed. Understand STIX/TAXII formats.", tools:["MISP","STIX/TAXII"] },
+        { day:18, tag:"soc", label:"Phishing analysis — headers & artifacts", detail:"Analyse phishing emails: headers, URLs, attachments. Extract IOCs manually.", tools:["MXToolbox","Any.run","PhishTool"] },
+        { day:19, tag:"soc", label:"Malware sandbox analysis", detail:"Submit samples to Any.run and Cuckoo. Read process trees, network calls, and file drops.", tools:["Any.run","Cuckoo Sandbox","Joe Sandbox"] },
+        { day:20, tag:"soc", label:"Threat hunting basics with hypothesis", detail:"Build a hypothesis-driven hunt for PowerShell abuse using SIEM data.", tools:["Splunk","ATT&CK T1059"] },
+        { day:21, tag:"soc", label:"Week review + Cyber Defenders lab", detail:"Complete 2 CyberDefenders labs. Document findings in a mini-threat intel report.", tools:["CyberDefenders","ATT&CK Navigator"] },
+      ]},
+      { title: "Week 4 — Incident Response & Ticketing", days: [
+        { day:22, tag:"soc", label:"IR lifecycle: Prepare, Detect, Contain, Eradicate, Recover", detail:"Study NIST SP 800-61. Build a personal IR playbook template.", tools:["NIST 800-61","TheHive"] },
+        { day:23, tag:"soc", label:"TheHive + Cortex setup for case management", detail:"Deploy TheHive. Create cases, tasks, observables. Link to MISP for IOC enrichment.", tools:["TheHive","Cortex","MISP"] },
+        { day:24, tag:"soc", label:"Triage methodology: P1/P2/P3 classification", detail:"Practise triaging 10 simulated alerts. Define severity criteria with business context.", tools:["TheHive","SIEM"] },
+        { day:25, tag:"soc", label:"Endpoint forensics — process, network, memory", detail:"Use Sysinternals suite (Process Monitor, TCPView, Autoruns) for endpoint investigation.", tools:["Sysinternals","Volatility 3"] },
+        { day:26, tag:"soc", label:"Memory forensics with Volatility", detail:"Analyse a Windows memory dump. Extract processes, network connections, and injected code.", tools:["Volatility 3","Rekall"] },
+        { day:27, tag:"soc", label:"Write a full IR report", detail:"Document a simulated incident end-to-end: timeline, IOCs, containment steps, lessons learned.", tools:["TheHive","Markdown"] },
+        { day:28, tag:"soc", label:"Blue Team Labs Online — IR challenge", detail:"Complete one full IR scenario on Blue Team Labs Online. Capture all flag categories.", tools:["Blue Team Labs Online"] },
+        { day:29, tag:"cert", label:"CompTIA Security+ — study domains 1-3", detail:"Study Threats/Attacks, Architecture, and Implementation domains. Do 50 practice questions.", tools:["Professor Messer","Darril Gibson"] },
+        { day:30, tag:"cert", label:"Phase 1 capstone review + gap analysis", detail:"Review all tools from Days 1-29. List 5 weak areas. Set goals for Phase 2.", tools:["Personal notes","Notion"] },
+      ]},
+    ]
+  },
+  2: {
+    label: "Phase 2 — Automation & Cloud Security",
+    icon: "⚡",
+    goal: "Build Security Automation (SOAR, Python, APIs) and Cloud Security skills (AWS/Azure) that make you stand out for modern SOC roles.",
+    cls: "p2",
+    weeks: [
+      { title: "Week 5 — Security Automation Fundamentals", days: [
+        { day:31, tag:"auto", label:"Python for security — file parsing & regex", detail:"Parse log files with Python. Extract IPs, timestamps, and event codes using regex.", tools:["Python 3","re module","pandas"] },
+        { day:32, tag:"auto", label:"Python: requests library + API calls", detail:"Call VirusTotal & Shodan APIs. Build a script that auto-enriches an IP address.", tools:["Python requests","VirusTotal API","Shodan API"] },
+        { day:33, tag:"auto", label:"Build an IOC enrichment script", detail:"Automate IOC lookup: input a hash/IP/domain → output reputation, geoloc, ASN, and malware family.", tools:["Python","VirusTotal","AbuseIPDB","ipinfo.io"] },
+        { day:34, tag:"auto", label:"Splunk REST API & automation", detail:"Use Splunk REST API to trigger searches, pull alerts, and update lookups programmatically.", tools:["Splunk REST API","Python requests"] },
+        { day:35, tag:"auto", label:"SOAR concepts — Palo Alto XSOAR basics", detail:"Study SOAR architecture. Set up XSOAR Community Edition. Build a basic playbook.", tools:["XSOAR Community","n8n"] },
+        { day:36, tag:"auto", label:"Build a phishing response SOAR playbook", detail:"Automate: receive email alert → extract IOCs → enrich → block sender → create ticket.", tools:["XSOAR","n8n","Python"] },
+        { day:37, tag:"auto", label:"Shuffle SOAR — open-source automation", detail:"Deploy Shuffle (SOAR). Build a workflow: SIEM alert → TheHive case → Slack notification.", tools:["Shuffle SOAR","TheHive","Slack webhook"] },
+      ]},
+      { title: "Week 6 — Cloud Security Fundamentals", days: [
+        { day:38, tag:"cloud", label:"AWS core services for security", detail:"Study IAM, S3, VPC, CloudTrail, GuardDuty, Config, Security Hub. Map to SOC relevance.", tools:["AWS Free Tier","AWS Well-Architected"] },
+        { day:39, tag:"cloud", label:"AWS IAM deep-dive — roles, policies, SCPs", detail:"Create least-privilege roles. Audit IAM using IAM Access Analyzer. Identify over-permissions.", tools:["AWS IAM","IAM Access Analyzer","Prowler"] },
+        { day:40, tag:"cloud", label:"AWS CloudTrail log analysis", detail:"Enable CloudTrail. Query logs in Athena. Detect: new root login, API key creation, S3 public exposure.", tools:["AWS CloudTrail","Athena","CloudWatch"] },
+        { day:41, tag:"cloud", label:"AWS GuardDuty & Security Hub", detail:"Enable GuardDuty. Generate sample findings. Forward findings to Security Hub and SIEM.", tools:["GuardDuty","Security Hub","Lambda"] },
+        { day:42, tag:"cloud", label:"S3 security — ACLs, bucket policies, encryption", detail:"Audit an S3 bucket for public exposure. Write a bucket policy. Enable server-side encryption.", tools:["AWS S3","S3Scanner","Prowler"] },
+        { day:43, tag:"cloud", label:"Azure AD & Entra ID fundamentals", detail:"Study Azure AD Conditional Access, MFA, PIM, and Identity Protection. Compare to AWS IAM.", tools:["Azure Free Account","Entra ID","Microsoft Defender"] },
+        { day:44, tag:"cloud", label:"Azure Sentinel — ingestion & analytics rules", detail:"Connect Azure AD, Office 365, and firewall logs to Sentinel. Write a KQL detection rule.", tools:["Microsoft Sentinel","KQL","Log Analytics"] },
+      ]},
+      { title: "Week 7 — Cloud Attack Techniques & Detection", days: [
+        { day:45, tag:"cloud", label:"Cloud attack TTPs — MITRE ATT&CK for Cloud", detail:"Study cloud-specific ATT&CK techniques: T1078 (Valid Accounts), T1136 (Create Account), T1530.", tools:["ATT&CK for Cloud","CloudSploit"] },
+        { day:46, tag:"cloud", label:"CloudGoat lab — IAM privilege escalation", detail:"Complete Rhino Security Labs' CloudGoat scenario 'iam_privesc_by_rollback'. Document findings.", tools:["CloudGoat","AWS CLI","Pacu"] },
+        { day:47, tag:"cloud", label:"S3 data exfiltration detection", detail:"Simulate and detect S3 data exfiltration using CloudTrail. Build Splunk alert for GetObject anomalies.", tools:["CloudTrail","Splunk","GuardDuty"] },
+        { day:48, tag:"cloud", label:"Container security — Docker & Kubernetes basics", detail:"Scan Docker images with Trivy. Understand RBAC in Kubernetes. Review CIS Benchmarks for K8s.", tools:["Trivy","Falco","Kubernetes"] },
+        { day:49, tag:"cloud", label:"Infrastructure as Code security — Terraform scanning", detail:"Write a Terraform config and scan with Checkov and tfsec. Fix 5 misconfigurations.", tools:["Terraform","Checkov","tfsec"] },
+        { day:50, tag:"cloud", label:"AWS threat hunting with CloudTrail + Athena", detail:"Hunt for suspicious API calls: AssumeRole chains, data exfiltration, persistence via Lambda.", tools:["Athena","CloudTrail","AWS CLI"] },
+        { day:51, tag:"cloud", label:"Cloud compliance frameworks — CIS, SOC2, NIST CSF", detail:"Map AWS controls to CIS Benchmark v2. Run Prowler for automated compliance checking.", tools:["Prowler","Steampipe","CIS Benchmark"] },
+      ]},
+      { title: "Week 8 — Advanced Automation & Integrations", days: [
+        { day:52, tag:"auto", label:"Build an AWS GuardDuty → SIEM pipeline", detail:"Lambda function to forward GuardDuty findings to Splunk HEC in real-time.", tools:["Lambda","GuardDuty","Splunk HEC","Python"] },
+        { day:53, tag:"auto", label:"Automated threat intel enrichment pipeline", detail:"Build: MISP feed → Python enrichment → Splunk lookup table update → alert on hit.", tools:["MISP","Python","Splunk"] },
+        { day:54, tag:"auto", label:"Slack/Teams bot for SOC alerts", detail:"Build a bot that receives SIEM webhook → formats alert → posts to Slack with buttons to escalate.", tools:["Slack API","Python","Splunk webhook"] },
+        { day:55, tag:"auto", label:"Automated IR playbook in Python", detail:"Script a full playbook: block IP via firewall API → isolate endpoint via EDR API → create IR ticket.", tools:["Python","CrowdStrike API","PagerDuty API"] },
+        { day:56, tag:"auto", label:"n8n workflow automation for SOC", detail:"Build 3 n8n workflows: IOC enrichment, case creation, daily threat intel briefing.", tools:["n8n","TheHive","VirusTotal"] },
+        { day:57, tag:"auto", label:"Write a custom Splunk add-on (TA)", detail:"Build a simple Splunk Technology Add-on to parse a custom log format.", tools:["Splunk Add-on Builder","Python"] },
+        { day:58, tag:"cert", label:"AWS Security Specialty — study domains 1-2", detail:"Study AWS Incident Response and Logging/Monitoring domains. Do 30 practice questions.", tools:["Tutorials Dojo","AWS Whitepapers"] },
+        { day:59, tag:"cloud", label:"GCP security overview", detail:"Study GCP IAM, Cloud Logging, Security Command Center. Note differences from AWS/Azure.", tools:["GCP Free Tier","Security Command Center"] },
+        { day:60, tag:"cert", label:"Phase 2 capstone — build a mini SOC", detail:"Integrate SIEM + SOAR + threat intel + cloud logging into one working lab. Document architecture.", tools:["Draw.io","GitHub","Notion"] },
+      ]},
+    ]
+  },
+  3: {
+    label: "Phase 3 — Job Hunting & Integration",
+    icon: "🎯",
+    goal: "Build your portfolio, prepare for interviews, earn certifications, and land a SOC Analyst / Cloud Security role.",
+    cls: "p3",
+    weeks: [
+      { title: "Week 9 — Portfolio & Projects", days: [
+        { day:61, tag:"cert", label:"Create GitHub portfolio structure", detail:"Create repos for: SIEM dashboards, automation scripts, cloud security findings, CTF writeups.", tools:["GitHub","Markdown","Draw.io"] },
+        { day:62, tag:"auto", label:"Document Project 1: IOC enrichment tool", detail:"Write README with architecture, code walkthrough, screenshots, and demo GIF.", tools:["GitHub","Python","VirusTotal API"] },
+        { day:63, tag:"cloud", label:"Document Project 2: AWS security lab", detail:"Write blog-style walkthrough of your CloudGoat IAM escalation + detection pipeline.", tools:["GitHub","CloudTrail","Splunk"] },
+        { day:64, tag:"auto", label:"Document Project 3: SOAR playbook", detail:"Video or README walkthrough of your phishing SOAR automation playbook.", tools:["XSOAR","Shuffle","GitHub"] },
+        { day:65, tag:"soc", label:"Write 3 threat detection blog posts", detail:"Publish on Medium or personal site: brute force detection, DNS tunnelling, AWS IAM abuse.", tools:["Medium","GitHub Pages","Dev.to"] },
+        { day:66, tag:"cert", label:"LinkedIn profile overhaul", detail:"Optimise headline, about section, skills (Splunk, AWS, Python, SOAR), and add portfolio links.", tools:["LinkedIn"] },
+        { day:67, tag:"cert", label:"Resume ATS optimisation", detail:"Tailor resume with JD keywords: SOC Analyst, SIEM, SOAR, cloud security, incident response.", tools:["Jobscan","Resume.io"] },
+      ]},
+      { title: "Week 10 — Certifications Push", days: [
+        { day:68, tag:"cert", label:"Security+ practice exam — full 90 questions", detail:"Take a full timed mock exam. Identify weak areas. Score should be >80% to consider booking exam.", tools:["ExamCompass","Darril Gibson"] },
+        { day:69, tag:"cert", label:"SC-200 (Microsoft Security Analyst) — study Day 1", detail:"Study Sentinel, Defender, and KQL sections. Microsoft's SC-200 aligns perfectly with SOC roles.", tools:["Microsoft Learn","SC-200"] },
+        { day:70, tag:"cert", label:"SC-200 — study Day 2 + practice lab", detail:"Complete Microsoft Learn SC-200 labs: configure Sentinel, write analytics rules, build workbooks.", tools:["Microsoft Learn","Azure trial"] },
+        { day:71, tag:"cert", label:"CompTIA CySA+ — domains overview", detail:"Study threat management, vulnerability management, and cyber incident response domains.", tools:["CySA+ Study Guide","Jason Dion"] },
+        { day:72, tag:"cert", label:"AWS Cloud Practitioner or Security Specialty — final review", detail:"Decide which cert to target. Do 2 full practice exams. Book the exam date.", tools:["Tutorials Dojo","A Cloud Guru"] },
+        { day:73, tag:"cert", label:"TCM Security SOC Analyst exam prep", detail:"Review TCM Security Practical SOC Analyst course materials. Take practice challenge.", tools:["TCM Security","Practical SOC"] },
+        { day:74, tag:"cert", label:"Certification mock exam day", detail:"Take full mock exams for your target cert. Note every wrong answer and review those topics.", tools:["Whizlabs","Udemy practice tests"] },
+      ]},
+      { title: "Week 11 — Interview Preparation", days: [
+        { day:75, tag:"cert", label:"50 SOC interview Q&A — theory", detail:"Prepare answers: What is SIEM? Walk me through an IR process. How do you handle false positives?", tools:["InterviewBit","GitHub interview lists"] },
+        { day:76, tag:"cert", label:"50 SOC interview Q&A — technical", detail:"Practise: Explain this log entry. Write an SPL query. What does this pcap show?", tools:["Wireshark","Splunk","Cybersecurity Interview Handbook"] },
+        { day:77, tag:"cloud", label:"Cloud security interview questions", detail:"Prepare: How do you detect IAM abuse in AWS? What is the shared responsibility model?", tools:["AWS docs","Azure docs"] },
+        { day:78, tag:"auto", label:"Automation interview — live coding prep", detail:"Practise writing Python scripts under time pressure: parse a log, call an API, filter IOCs.", tools:["Python","LeetCode easy","HackerRank"] },
+        { day:79, tag:"soc", label:"Technical scenario walkthroughs", detail:"Practise 5 full scenarios: ransomware alert, compromised account, data exfiltration, cloud misconfiguration.", tools:["Blue Team Labs Online","CyberDefenders"] },
+        { day:80, tag:"cert", label:"Behavioural interview prep — STAR method", detail:"Prepare STAR answers: tell me about a security incident you handled, a time you automated something.", tools:["STAR method","Notion"] },
+        { day:81, tag:"cert", label:"Mock interview — record yourself", detail:"Do a 45-min mock interview. Record and review. Focus on clarity, confidence, and depth.", tools:["Zoom recording","Notion"] },
+      ]},
+      { title: "Week 12 — Job Applications & Final Push", days: [
+        { day:82, tag:"cert", label:"Apply to 10 SOC Analyst positions", detail:"Target: SOC Tier 1/2, Cloud Security Analyst, Detection Engineer. Customise each cover letter.", tools:["LinkedIn","Naukri","Glassdoor"] },
+        { day:83, tag:"soc", label:"CyberDefenders — final CTF challenge", detail:"Complete a hard-level CyberDefenders scenario. Write a publishable writeup.", tools:["CyberDefenders","GitHub"] },
+        { day:84, tag:"auto", label:"Improve automation portfolio — add tests & CI/CD", detail:"Add unit tests to your Python scripts. Set up GitHub Actions for automated testing.", tools:["pytest","GitHub Actions","pre-commit"] },
+        { day:85, tag:"cloud", label:"Cloud security capstone — AWS + detection pipeline", detail:"Build: EC2 honeypot → CloudTrail alert → Lambda enrichment → Splunk dashboard → auto-block.", tools:["AWS","Splunk","Lambda","Python"] },
+        { day:86, tag:"cert", label:"Network with security professionals", detail:"Reach out to 5 SOC analysts on LinkedIn. Join ISAC groups, DFIR Discord, and local security meetups.", tools:["LinkedIn","Twitter/X","Discord"] },
+        { day:87, tag:"cert", label:"Apply to 10 more positions + follow up", detail:"Follow up on earlier applications. Check bug bounty platforms for quick wins to add to profile.", tools:["HackerOne","Bugcrowd","LinkedIn"] },
+        { day:88, tag:"soc", label:"Complete TryHackMe SOC Level 1 path", detail:"Finish any remaining TryHackMe SOC Level 1 rooms. Earn the certificate badge.", tools:["TryHackMe"] },
+        { day:89, tag:"cert", label:"Final resume and portfolio review", detail:"Get a peer review of your resume and GitHub. Fix formatting, update with recent projects.", tools:["GitHub","Grammarly","Peer review"] },
+        { day:90, tag:"cert", label:"Day 90: Reflect, iterate, keep going", detail:"Review the full 90 days. Identify remaining gaps. If no offer yet, repeat Phase 3 with new target roles.", tools:["Notion","LinkedIn","Personal journal"], milestone: "End of structured roadmap — now the real work begins." },
+      ]},
+    ]
+  }
+};
+
+const STORAGE_KEY = 'soc90_done_v2';
+const tags = { soc:"SOC", auto:"Automation", cloud:"Cloud", cert:"Career" };
+const tagClass = { soc:"tag-soc", auto:"tag-auto", cloud:"tag-cloud", cert:"tag-cert" };
+
+let currentPhase = 1;
+let done = new Set();
+let saveTimer = null;
+
+// ── LOAD ──
+function loadDone() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) done = new Set(JSON.parse(raw));
+  } catch(e) { done = new Set(); }
+}
+
+// ── SAVE ──
+function saveDone() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify([...done]));
+    showToast();
+  } catch(e) {}
+}
+
+function showToast() {
+  const toast = document.getElementById('save-toast');
+  toast.classList.add('show');
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(() => toast.classList.remove('show'), 2000);
+}
+
+// ── TOTAL DAYS ──
+function totalDays() {
+  return Object.values(phases).reduce((s,p) => s + p.weeks.reduce((ws,w) => ws + w.days.length, 0), 0);
+}
+
+// ── UPDATE RING ──
+function updateRing() {
+  const total = totalDays();
+  const pct = done.size / total;
+  const circumference = 238.76;
+  const offset = circumference * (1 - pct);
+  const fill = document.getElementById('ring-fill');
+  const pctEl = document.getElementById('ring-pct');
+  const capEl = document.getElementById('ring-caption');
+  if (fill) fill.style.strokeDashoffset = offset;
+  if (pctEl) pctEl.textContent = Math.round(pct * 100) + '%';
+  if (capEl) capEl.textContent = done.size + ' / ' + total + ' days';
+
+  // Change ring color based on progress
+  if (fill) {
+    if (pct >= 0.9) fill.style.stroke = '#00d68a';
+    else if (pct >= 0.6) fill.style.stroke = '#f5a623';
+    else fill.style.stroke = '#1d8eff';
+  }
+}
+
+// ── SET PHASE ──
+function setPhase(p) {
+  currentPhase = p;
+  document.querySelectorAll('.phase-tab').forEach(t => {
+    t.classList.toggle('active', +t.dataset.phase === p);
+  });
+  render();
+}
+
+// ── TOGGLE DAY ──
+function toggleDay(day) {
+  if (done.has(day)) done.delete(day); else done.add(day);
+  saveDone();
+  updateRing();
+  const card = document.getElementById('card-' + day);
+  if (card) card.classList.toggle('done', done.has(day));
+  updatePhaseProg();
+}
+
+// ── PHASE PROGRESS ──
+function updatePhaseProg() {
+  const ph = phases[currentPhase];
+  const phTotal = ph.weeks.reduce((s,w) => s + w.days.length, 0);
+  const phDone = ph.weeks.reduce((s,w) => s + w.days.filter(d => done.has(d.day)).length, 0);
+  const pct = phTotal ? Math.round(phDone / phTotal * 100) : 0;
+  const fill = document.getElementById('phase-prog-fill');
+  const pctEl = document.getElementById('phase-prog-pct');
+  if (fill) fill.style.width = pct + '%';
+  if (pctEl) pctEl.textContent = pct + '%';
+}
+
+// ── RESET ──
+function resetAll() {
+  if (!confirm('Reset ALL progress? This cannot be undone.')) return;
+  done.clear();
+  saveDone();
+  updateRing();
+  render();
+}
+
+// ── RENDER ──
+function render() {
+  const ph = phases[currentPhase];
+  const phTotal = ph.weeks.reduce((s,w) => s + w.days.length, 0);
+  const phDone = ph.weeks.reduce((s,w) => s + w.days.filter(d => done.has(d.day)).length, 0);
+  const phPct = phTotal ? Math.round(phDone / phTotal * 100) : 0;
+  const overallTotal = totalDays();
+
+  let html = `
+    <div class="phase-banner ${ph.cls}">
+      <div class="banner-icon">${ph.icon}</div>
+      <div class="banner-text">
+        <h2>${ph.label}</h2>
+        <p>${ph.goal}</p>
+      </div>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="s-label">This Phase</div>
+        <div class="s-value">${phDone}<span>/${phTotal}</span></div>
+      </div>
+      <div class="stat-card">
+        <div class="s-label">Overall</div>
+        <div class="s-value">${done.size}<span>/${overallTotal}</span></div>
+      </div>
+      <div class="stat-card">
+        <div class="s-label">Complete</div>
+        <div class="s-value">${Math.round(done.size / overallTotal * 100)}<span>%</span></div>
+      </div>
+      <div class="stat-card">
+        <div class="s-label">Remaining</div>
+        <div class="s-value">${overallTotal - done.size}<span> days</span></div>
+      </div>
+    </div>
+
+    <div class="phase-prog-wrap">
+      <span class="phase-prog-label">Phase Progress</span>
+      <div class="phase-prog-bar">
+        <div class="phase-prog-fill ${ph.cls}-fill" id="phase-prog-fill" style="width:${phPct}%"></div>
+      </div>
+      <span class="phase-prog-pct" id="phase-prog-pct">${phPct}%</span>
+    </div>
+
+    <div class="toolbar">
+      <span class="toolbar-label">Auto-saves to browser storage</span>
+      <button class="btn-reset" onclick="resetAll()">↺ Reset All</button>
+    </div>
+  `;
+
+  ph.weeks.forEach(week => {
+    const weekDone = week.days.filter(d => done.has(d.day)).length;
+    html += `
+      <div class="week-section">
+        <div class="week-header">
+          <span class="week-label">${week.title}</span>
+          <div class="week-line"></div>
+          <span class="week-count">${weekDone}/${week.days.length}</span>
+        </div>
+        <div class="day-grid">
+    `;
+
+    week.days.forEach((d, i) => {
+      const isDone = done.has(d.day);
+      html += `
+        <div class="day-card${isDone ? ' done' : ''}" id="card-${d.day}" data-tag="${d.tag}"
+          onclick="toggleDay(${d.day})" style="animation-delay:${i * 0.03}s">
+          <div class="day-meta">
+            <span class="day-num">DAY ${d.day}</span>
+            <span class="day-tag ${tagClass[d.tag]}">${tags[d.tag]}</span>
+            <div class="check-btn">
+              <svg class="check-icon" width="10" height="8" viewBox="0 0 10 8" fill="none">
+                <path d="M1 4L3.5 6.5L9 1" stroke="#080c12" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+          </div>
+          <div class="day-label">${d.label}</div>
+          <div class="day-detail">${d.detail}</div>
+          ${d.tools ? `<div class="day-tools">${d.tools.map(t => `<span class="tool-chip">${t}</span>`).join('')}</div>` : ''}
+          ${d.milestone ? `<div class="milestone-badge">⭐ ${d.milestone}</div>` : ''}
+        </div>
+      `;
+    });
+
+    html += `</div></div>`;
+  });
+
+  document.getElementById('main-content').innerHTML = html;
+  updateRing();
+}
+
+// ── INIT ──
+loadDone();
+render();
+</script>
+</body>
+</html>
